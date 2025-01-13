@@ -48,7 +48,7 @@ authRouter.post("/signup", async (req: Request<{}, {}, SignUpBody>, res: Respons
         }
         const [user] = await db.insert(users).values(newUser).returning();
         res.status(201).json(user);
-    } catch (e) {
+    } catch (e) { 
         console.error(e);
         res.status(500).json({error: e});
     }
