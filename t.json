@@ -1,0 +1,42 @@
+{
+  "inbounds": [
+    {
+      "port": 1081,
+      "listen": "127.0.0.1",
+      "protocol": "socks",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
+      },
+      "settings": {
+        "auth": "noauth",
+        "udp": false
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "vmess",
+      "settings": {
+        "vnext": [
+          {
+            "address": "azjp02.nwncd.com",
+            "port": 35775,
+            "users": [
+              {
+                "id": "9a28922e-7bad-3ed3-8ba3-1e3f9906a3b7",
+                "alterId": "2"
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {
+          "path": "/amdyes"
+        }
+      }
+    }
+  ]
+}
