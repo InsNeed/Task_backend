@@ -1,32 +1,39 @@
+version: '3.8'
+
 services:
   backend:
     container_name: backend_container
     build: 
-      context: ./
+      context: ./  # 当前目录作为构建上下文
     ports:
-      - "${PORT}:${PORT}"
+      - "8000:8000"  # 硬编码端口号
     environment:
-      - PORT=${PORT}
-      - DATABASE_URL=${DATABASE_URL}
+      - PORT=8000  # 后端端口
+      - DATABASE_URL=postgresql://postgres:123456@db:5432/mydb  # 数据库连接字符串
+      - DB_HOST=db  # 数据库主机
+      - DB_PORT=5432  # 数据库端口
+      - DB_NAME=mydb  # 数据库名
+      - DB_USER=postgres  # 数据库用户
+      - DB_PASSWORD=123456  # 数据库密码
+      - JWT_SECRET="iamjwtpassword"  # JWT 密钥
     depends_on:
-      - db
+      - db  # 确保 db 服务先启动
     volumes:
-      - .:/app
-      - /app/node_modules
-
+      - .:/app  # 将当前目录挂载到容器的 /app
+      - /app/node_modules  # 持久化 node_modules（防止依赖丢失）
 
   db:
     image: postgres:15
     container_name: postgres_container
     restart: always
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: postgres  # 数据库用户名
+      POSTGRES_PASSWORD: 123456  # 数据库密码
+      POSTGRES_DB: mydb  # 使用的数据库名
     ports:
-      - "5432:5432"
+      - "5432:5432"  # 映射 PostgreSQL 默认端口
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data  # 持久化 PostgreSQL 数据
 
 volumes:
-  postgres_data:
+  postgres_data:  # 声明一个命名卷用于持久化数据库数据
